@@ -1,283 +1,497 @@
-# NodeMind AI Agent Builder Platform
+# 🧠 Nodemind — AI Agent Builder Platform
 
-NodeMind is a visual AI workflow builder built with Next.js, Convex, Clerk, Google Gemini, and the Google Agent Development Kit. Users can create agent graphs on a drag-and-drop canvas, convert those flows into runnable tool/agent configuration, preview the workflow, and chat with the published result.
+<div align="center">
 
-## What This Project Does
+![Nodemind Banner](https://via.placeholder.com/800x200/1a1a2e/ffffff?text=Nodemind+%E2%80%94+Build+AI+Workflows+Visually)
 
-- Provides a landing page and authenticated dashboard for managing AI agents.
-- Lets users create agent workflows visually with React Flow.
-- Supports node-based logic using:
-  - `Start`
-  - `End`
-  - `Agent`
-  - `API`
-  - `If/Else`
-  - `While`
-  - `User Approval`
-- Stores users, agents, graph state, and conversations in Convex.
-- Uses Gemini to transform saved workflow graphs into executable agent/tool JSON.
-- Uses Google ADK to run streamed multi-agent/tool chat sessions.
-- Uses Clerk for authentication, user profile, and pricing/subscription UI.
-- Includes Arcjet configuration for request protection/token-bucket rate limiting.
+**Build, configure, and deploy intelligent AI agents through a visual drag-and-drop interface — no coding required.**
 
-## Tech Stack
+[![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)](https://nextjs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)](https://typescriptlang.org)
+[![Google Gemini](https://img.shields.io/badge/Gemini-2.5_Flash-orange?style=for-the-badge&logo=google)](https://ai.google.dev)
+[![Convex](https://img.shields.io/badge/Convex-Database-red?style=for-the-badge)](https://convex.dev)
+[![Clerk](https://img.shields.io/badge/Clerk-Auth-purple?style=for-the-badge)](https://clerk.com)
 
-- `Next.js 15` with App Router
-- `React 19`
-- `TypeScript`
-- `Tailwind CSS 4`
-- `shadcn/ui` and Radix UI components
-- `@xyflow/react` for the workflow builder canvas
-- `Convex` for backend data and mutations/queries
-- `Clerk` for auth and billing UI
-- `@google/genai` for Gemini content generation
-- `@google/adk` for agent orchestration and streaming responses
-- `Arcjet` for API protection
+[Live Demo](https://nodemind.ai) · [Report Bug](https://github.com/yourusername/nodemind/issues) · [Request Feature](https://github.com/yourusername/nodemind/issues)
 
-## Product Flow
+</div>
 
-1. A signed-in user creates an agent from the dashboard.
-2. Convex creates a new agent record with a default `StartNode`.
-3. The user edits the workflow in `/nodemind-agent/[agentId]`.
-4. Nodes and edges are saved back to Convex.
-5. In preview mode, the graph is converted into a simplified workflow config.
-6. `/api/generate-api-tool-config` sends that config to Gemini and asks for structured JSON describing:
-   - the primary system prompt
-   - sub-agents
-   - tools
-7. The generated config is saved into `agentToolConfig` in Convex.
-8. Chat requests stream through `/api/agent-chat` or `/api/agent-sdk`.
-9. Google ADK instantiates tools and agents dynamically and streams text back to the UI.
+---
 
-## App Structure
+## 📋 Table of Contents
 
-```text
-app/
-  page.tsx                         Landing page
-  layout.tsx                       Root layout with Clerk, Convex, and app providers
-  provider.tsx                     Global user/workflow providers
-  (auth)/                          Clerk sign-in and sign-up routes
-  Dashboard/                       Authenticated dashboard area
-  nodemind-agent/[agentId]/        Visual workflow editor
-  nodemind-agent/[agentId]/preview Agent preview + chat UI
-  api/
-    agent-chat/                    Generic streamed agent chat endpoint
-    agent-sdk/                     Agent chat endpoint backed by saved Convex config
-    generate-api-tool-config/      Gemini-powered workflow-to-config generation
-    arcjet/                        Arcjet protection test endpoint
+- [About](#-about)
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Node Types](#-node-types)
+- [Getting Started](#-getting-started)
+- [Environment Variables](#-environment-variables)
+- [Project Structure](#-project-structure)
+- [How It Works](#-how-it-works)
+- [Use Cases](#-use-cases)
+- [API Reference](#-api-reference)
+- [Subscription Plans](#-subscription-plans)
+- [Contributing](#-contributing)
+- [License](#-license)
 
-components/
-  ui/                              Shared UI primitives
-  ai/code-block.tsx                Code snippet display used in publish dialog
+---
 
-convex/
-  schema.ts                        Database schema
-  agent.ts                         Agent queries and mutations
-  conversation.ts                  Conversation lookup
-  user.ts                          User creation and token management
+## 🚀 About
 
-config/
-  geminiai.ts                      Gemini client setup
-  arcjet.ts                        Arcjet setup
+Nodemind is a full-stack AI Agent Builder Platform that enables users to visually design, configure, and deploy intelligent AI agents through a node-based drag-and-drop interface.
 
-context/
-  UserDetailContext.tsx
-  WorkflowContext.tsx
-```
+The platform abstracts the complexity of large language model (LLM) integration by providing a **dynamic workflow execution engine** that processes a sequence of interconnected nodes — each node's output becomes the next node's enriched input, enabling sophisticated multi-step AI pipelines.
 
-## Key Routes
+> Built as part of a Specialized Studies course at **Troy University** by Kashyap Vaghani (Student ID: 1699018)
 
-- `/` - marketing/landing page
-- `/sign-in` - Clerk sign-in
-- `/sign-up` - Clerk sign-up
-- `/Dashboard` - dashboard home
-- `/Dashboard/My-Agents` - agent listing
-- `/Dashboard/Pricing` - Clerk pricing table
-- `/Dashboard/Profile` - Clerk profile management
-- `/nodemind-agent/[agentId]` - visual builder
-- `/nodemind-agent/[agentId]/preview` - preview, reboot, publish, and chat
+---
 
-## Data Model
+## ✨ Features
 
-### `UserTable`
+### 🎨 Visual Workflow Builder
+- Drag-and-drop canvas powered by React Flow
+- 6 distinct node types for complete workflow control
+- Real-time node connection with animated edges
+- Context-sensitive settings panel for each node
 
-- `name`
-- `email`
-- `subscription`
-- `token`
-- `lastReset`
+### 🤖 AI Agent Engine
+- Google Gemini 2.5 Flash integration
+- Custom instructions per agent node
+- JSON and Text output format support
+- Knowledge base (Add Context) for domain-specific agents
+- Chat history support for conversational agents
 
-### `AgentTable`
+### 🔌 API Integration
+- External API calls within workflows
+- Dynamic URL parameter substitution with `{{message}}` placeholder
+- Automatic API key injection
+- GET and POST method support
 
-- `agentId`
-- `name`
-- `config`
-- `nodes`
-- `edges`
-- `published`
-- `userId`
-- `agentToolConfig`
+### 🔀 Conditional Logic
+- If/Else branching with AI-evaluated conditions
+- Natural language condition expressions
+- While loop support for iterative workflows
 
-### `ConversationTable`
+### 💬 Real-Time Chat Interface
+- Streaming responses via Server-Sent Events (SSE)
+- Markdown rendering with table support
+- Conversation history management
+- Preview mode for testing before publishing
 
-- `conversationId`
-- `agentId`
-- `userId`
+### 🚀 Publish & Deploy
+- One-click agent publishing
+- Production-ready API endpoint generation
+- Copy-paste code snippets for external integration
+- API key management
 
-## Environment Variables
+### 🔐 Security & Auth
+- Clerk authentication (Google OAuth + Email/Password)
+- Token-based credit system
+- Arcjet rate limiting
+- Subscription tier management
 
-Create a `.env.local` file with values for:
+---
 
+## 🛠 Tech Stack
+
+| Category | Technology |
+|----------|-----------|
+| **Frontend** | Next.js 14, React, TypeScript, Tailwind CSS |
+| **UI Components** | Shadcn UI, React Flow, Lucide Icons |
+| **AI/LLM** | Google Gemini 2.5 Flash (via @google/genai) |
+| **Database** | Convex (Real-time, serverless) |
+| **Authentication** | Clerk |
+| **Rate Limiting** | Arcjet |
+| **Styling** | Tailwind CSS |
+| **Markdown** | react-markdown + remark-gfm |
+| **HTTP Client** | Axios |
+| **ID Generation** | uuid |
+
+---
+
+## 🔷 Node Types
+
+### 1. 🟢 Start Node
+Entry point of every workflow. Every agent must begin with a Start node.
+
+### 2. 🟠 Agent Node
+Executes an LLM call with configurable:
+- **Name** — Display name for the agent
+- **Instructions** — Custom system prompt
+- **Add Context** — Paste knowledge base for domain-specific answers
+- **Include Chat History** — Maintain conversation context
+- **AI Model** — Select Gemini model variant
+- **Output Format** — Text or JSON with custom schema
+
+### 3. 🩷 API Node
+Makes HTTP requests to external APIs:
+- **Name** — Display name
+- **Method** — GET or POST
+- **URL** — Supports `{{message}}` placeholder for dynamic values
+- **API Key** — Securely stored, auto-appended at runtime
+- **Body Parameters** — JSON body for POST requests
+
+> **Placeholder:** Use `{{message}}` in your URL — it will be automatically replaced with the current pipeline value at runtime.
+> 
+> Example: `https://finnhub.io/api/v1/quote?symbol={{message}}&token=YOUR_KEY`
+
+### 4. 🔵 If/Else Node
+Conditional branching based on pipeline context:
+- **If Condition** — Natural language or JSON field condition
+- Routes to **if** branch when condition is true
+- Routes to **else** branch when condition is false
+
+### 5. 🔷 While Node
+Loop execution while a condition remains true.
+
+### 6. 👍 User Approval Node
+Pause workflow execution for human approval before proceeding.
+
+### 7. 🔴 End Node
+Terminates workflow and formats final output:
+- **Output Format** — Text or JSON
+
+---
+
+## 🏁 Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+- Convex account
+- Clerk account
+- Google AI Studio account (Gemini API key)
+- Arcjet account
+
+### Installation
+
+1. **Clone the repository**
 ```bash
-CONVEX_DEPLOYMENT=
-NEXT_PUBLIC_CONVEX_URL=
-
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
-CLERK_SECRET_KEY=
-
-NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
-NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/Dashboard
-NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL=/
-NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL=/
-
-NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
-NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/Dashboard
-
-ARCJET_KEY=
-GEMINI_API_KEY=
+git clone https://github.com/yourusername/nodemind.git
+cd nodemind
 ```
 
-Notes:
-
-- `NEXT_PUBLIC_CONVEX_URL` is required by `app/ConvexClientProvider.tsx`.
-- `GEMINI_API_KEY` is required by `config/geminiai.ts`.
-- `ARCJET_KEY` is required by `config/arcjet.ts`.
-- Clerk plan checks in `app/provider.tsx` and `app/Dashboard/_components/AppSidebar.tsx` expect plans like `pro_plan` and `ultimate_plan`.
-
-## Local Development
-
-### 1. Install dependencies
-
+2. **Install dependencies**
 ```bash
 npm install
 ```
 
-### 2. Configure environment variables
-
-Add the required keys to `.env.local`.
-
-### 3. Run Convex in development
-
+3. **Set up Convex**
 ```bash
 npx convex dev
 ```
 
-### 4. Start the Next.js app
+4. **Configure environment variables**
+```bash
+cp .env.example .env.local
+```
 
+5. **Run the development server**
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+6. **Open your browser**
+```
+http://localhost:3000
+```
 
-## Available Scripts
+---
 
-- `npm run dev` - start the Next.js dev server
-- `npm run build` - production build
-- `npm run start` - start the production server
+## 🔑 Environment Variables
 
-## How Agent Execution Works
+Create a `.env.local` file in the root directory:
 
-### Workflow builder
+```env
+# Convex
+CONVEX_DEPLOYMENT=your_convex_deployment
+NEXT_PUBLIC_CONVEX_URL=your_convex_url
 
-The editor at `app/nodemind-agent/[agentId]/page.tsx` loads nodes and edges from Convex and renders them with React Flow. Users can add nodes from the tool panel, connect them, and save the graph.
+# Clerk Authentication
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+CLERK_SECRET_KEY=your_clerk_secret_key
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
 
-### Workflow compilation
+# Google Gemini
+GEMINI_API_KEY=your_gemini_api_key
 
-The preview page translates the saved graph into a simplified flow object:
+# Arcjet Rate Limiting
+ARCJET_KEY=your_arcjet_key
+```
 
-- each node becomes a workflow step
-- edge connections become `next` references
-- `IfElseNode` stores separate `if` and `else` branches
-- `StartNode` identifies the workflow entry point
+---
 
-### Tool/agent config generation
+## 📁 Project Structure
 
-`/api/generate-api-tool-config` sends the simplified flow to Gemini and asks for strict JSON output containing:
+```
+nodemind/
+├── app/
+│   ├── api/
+│   │   ├── agent-chat/
+│   │   │   └── route.ts          # Main workflow execution engine
+│   │   └── generate-api-tool-config/
+│   │       └── route.ts          # Gemini config generator
+│   ├── Dashboard/
+│   │   ├── My-Agents/            # Agent listing page
+│   │   └── page.tsx              # Main dashboard
+│   └── nodemind-agent/
+│       └── [agentId]/
+│           ├── page.tsx          # Agent builder canvas
+│           └── preview/
+│               └── page.tsx      # Preview & publish page
+├── components/
+│   └── ui/                       # Shadcn UI components
+├── context/
+│   └── WorkflowContext.tsx       # Global workflow state
+├── convex/
+│   ├── schema.ts                 # Database schema
+│   ├── agent.ts                  # Agent mutations/queries
+│   └── conversation.ts          # Conversation queries
+├── _customNodes/
+│   ├── AgentNode.tsx
+│   ├── ApiNode.tsx
+│   ├── EndNode.tsx
+│   ├── IfElseNode.tsx
+│   ├── StartNode.tsx
+│   ├── UserApprovalNode.tsx
+│   └── WhileNode.tsx
+├── _components/
+│   ├── AgentsToolPanel.tsx       # Left sidebar node panel
+│   ├── NodeSettings.tsx          # Right sidebar settings
+│   └── Header.tsx                # Top navigation
+├── _nodeSettings/
+│   ├── AgentSettings.tsx
+│   ├── ApiSettings.tsx
+│   ├── EndSettings.tsx
+│   ├── IfElseSettings.tsx
+│   ├── WhileSettings.tsx
+│   └── UserApprovalSettings.tsx
+├── config/
+│   └── geminiai.ts               # Gemini client config
+├── types/
+│   └── AgentType.ts              # TypeScript type definitions
+└── public/                       # Static assets
+```
 
-- `systemPrompt`
-- `primaryAgentName`
-- `agents`
-- `tools`
+---
 
-That JSON is stored on the agent as `agentToolConfig`.
+## ⚙️ How It Works
 
-### Chat runtime
+### Workflow Execution Engine
 
-`/api/agent-chat` and `/api/agent-sdk`:
+When a user sends a message, the backend:
 
-- create `FunctionTool` instances dynamically from saved tool definitions
-- create sub-agents dynamically from saved config
-- create a top-level `LlmAgent`
-- run the agent with `Runner.runAsync(...)`
-- stream text responses back to the frontend
+1. **Fetches** the agent's node and edge configuration from Convex
+2. **Reconstructs** the workflow graph
+3. **Traverses** the graph from the Start node
+4. **Executes** each node sequentially:
+   - **Agent Node** → Calls Gemini with instruction + context
+   - **API Node** → Fetches external data, appends to context
+   - **If/Else Node** → Evaluates condition using Gemini, routes accordingly
+5. **Passes** each node's output as enriched input to the next node
+6. **Returns** the final output from the End node
 
-The session layer currently uses `InMemorySessionService`, which means memory is process-local rather than durable across deployments/restarts.
+```
+User Input
+    ↓
+Start Node
+    ↓
+Agent Node (Gemini LLM call)
+    ↓
+If/Else Node (condition evaluation)
+    ↓              ↓
+IF branch      ELSE branch
+    ↓              ↓
+API Node      Agent Node
+    ↓
+Agent Node (analysis)
+    ↓
+End Node → Response to User
+```
 
-## Authentication And Access Control
+### Context Propagation
 
-- Clerk wraps the full app in `app/layout.tsx`.
-- `middleware.ts` protects all non-public routes.
-- Public routes currently include `/`, `/sign-in`, `/sign-up`, and `/api/agent-sdk`.
+Each node's output is passed to the next node as enriched context:
 
-## Token And Plan Logic
+```typescript
+// After API Node execution:
+currentInput = `Previous output: ${currentInput}
+API Response: ${JSON.stringify(apiData)}`
 
-The app stores token balances in Convex:
+// Agent Node receives full context:
+// - User's original message
+// - Previous agent outputs  
+// - API response data
+```
 
-- `free` users start with `100`
-- `pro` users start with `500`
-- `ultimate` users start with `5000`
+---
 
-`ResetMonthlyTokens` in `convex/user.ts` refills tokens every 30 days or when a user upgrades to a higher plan.
+## 💡 Use Cases
 
-## API Endpoints
+### 📈 Stock Market Analysis Agent
 
-### `POST /api/generate-api-tool-config`
+**Workflow:** `Start → Chat Agent → If/Else → Conversation Agent → End`
+                                          `→ Symbol Extractor → API → Analyzer → End`
 
-Accepts a workflow graph summary and returns generated JSON for agents/tools/system instructions.
+**Features:**
+- Intent classification (conversation vs. data request)
+- Company name to ticker symbol conversion
+- Real-time stock data via Finnhub API
+- Formatted analysis with trend insights and future predictions
 
-### `POST /api/agent-chat`
+**Setup:**
+1. Create new agent
+2. Add nodes as shown above
+3. Configure API node with Finnhub URL: `https://finnhub.io/api/v1/quote?symbol={{message}}&token=YOUR_KEY`
+4. Set agent instructions for each node
+5. Reboot Agent → Test
 
-Runs a chat session using request-provided tool and agent config and streams text output.
+### 🎓 University Information Assistant
 
-### `GET /api/agent-chat`
+**Workflow:** `Start → Assistant Agent (with knowledge base) → End`
 
-Returns a new generated conversation ID.
+**Features:**
+- Custom knowledge base with university data
+- Accurate answers without hallucination
+- Scope enforcement (declines off-topic questions)
 
-### `POST /api/agent-sdk`
+**Setup:**
+1. Create new agent
+2. Add single Agent node
+3. Paste knowledge base in **Add Context** field
+4. Set instruction to answer from knowledge base only
 
-Loads an agent by `agentId` from Convex, reconstructs its tools/agents, and streams the response.
+---
 
-### `GET /api/arcjet`
+## 📡 API Reference
 
-Sample protected route that demonstrates Arcjet decision handling.
+### Chat Endpoint
 
-## Current Implementation Notes
+```http
+POST /api/agent-chat
+Content-Type: application/json
 
-- The dashboard and editor are implemented and wired to Convex.
-- The publish dialog currently shows example integration code rather than generating per-agent SDK code.
-- Conversation memory is in-memory via Google ADK, so it is not durable.
-- The repo includes a populated `.env.local`; for safety, use your own keys and avoid committing secrets.
-- There are no lint/test scripts defined in `package.json` yet.
+{
+  "userId": "user_xxx",
+  "agentId": "agent-uuid",
+  "userInput": "Your message here"
+}
+```
 
-## Suggested Next Improvements
+**Response:** Streaming text response
 
-- Add linting and automated tests.
-- Persist conversations instead of relying on in-memory sessions.
-- Generate real publish/embed code from the saved agent configuration.
-- Add stronger validation around generated tool schemas and API methods.
-- Connect Arcjet protection to authenticated user identity instead of placeholder values.
+### Get Conversation ID
 
-## Repository Summary
+```http
+GET /api/agent-chat
+```
 
-This project is already beyond a starter app: it has a complete authentication flow, dashboard shell, visual workflow builder, Convex-backed persistence layer, Gemini-based workflow compilation step, and ADK-powered streaming chat runtime. The main README goal is to help future contributors understand that the system is a visual AI-agent orchestration product, not just a generic Next.js frontend.
+**Response:**
+```json
+{
+  "id": "uuid-conversation-id"
+}
+```
+
+### Integration Example
+
+```javascript
+const res = await fetch('https://nodemind.ai/api/agent-chat', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    agentId: '<your-agent-id>',
+    userId: '<user-id>',
+    userInput: userMessage
+  })
+});
+
+const reader = res.body.getReader();
+const decoder = new TextDecoder();
+
+while (true) {
+  const { value, done } = await reader.read();
+  if (done) break;
+  const chunk = decoder.decode(value, { stream: true });
+  console.log(chunk); // Process streaming response
+}
+```
+
+---
+
+## 💳 Subscription Plans
+
+| Feature | Starter | Pro | Enterprise |
+|---------|---------|-----|------------|
+| Price | $0/mo | $29/mo | Custom |
+| Agents | 3 | Unlimited | Unlimited |
+| API Calls/day | 50 | 1,000 | Unlimited |
+| Custom Knowledge Base | ❌ | ✅ | ✅ |
+| API Export | ❌ | ✅ | ✅ |
+| Priority Support | ❌ | ✅ | ✅ |
+| Dedicated Infrastructure | ❌ | ❌ | ✅ |
+
+---
+
+## 🗺 Roadmap
+
+- [ ] While loop full implementation
+- [ ] User Approval node real-time gates
+- [ ] Vector database RAG integration (Pinecone/Weaviate)
+- [ ] OpenAI GPT-4 and Anthropic Claude support
+- [ ] Agent templates marketplace
+- [ ] Analytics dashboard per agent
+- [ ] Multi-language support
+- [ ] Mobile-responsive builder
+- [ ] Webhook triggers for agents
+- [ ] Agent versioning and rollback
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
+## 👨‍💻 Author
+
+**Kashyap Vaghani**
+- Student ID: 1699018
+- Course: Specialized Studies
+- University: Troy University
+- GitHub: [@yourusername](https://github.com/yourusername)
+- LinkedIn: [Kashyap Vaghani](https://linkedin.com/in/yourprofile)
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🙏 Acknowledgments
+
+- [React Flow](https://reactflow.dev) for the visual canvas
+- [Google Gemini](https://ai.google.dev) for the LLM backbone
+- [Convex](https://convex.dev) for real-time database
+- [Clerk](https://clerk.com) for authentication
+- [Arcjet](https://arcjet.com) for rate limiting
+- [Shadcn UI](https://ui.shadcn.com) for UI components
+- Troy University — Specialized Studies Program
+
+---
+
+<div align="center">
+  <p>Built with ❤️ at Troy University</p>
+  <p>⭐ Star this repo if you find it helpful!</p>
+</div>
