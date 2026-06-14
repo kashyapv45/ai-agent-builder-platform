@@ -21,7 +21,7 @@ import WhileNode from '../_customNodes/WhileNode';
 import IfElseNode from '../_customNodes/IfElseNode';
 import UserApprovalNode from '../_customNodes/UserApprovalNode';
 
-export const nodeTypes = {
+const nodeTypes = {
     StartNode: StartNode,
     AgentNode: AgentNode,
     EndNode: EndNode,
