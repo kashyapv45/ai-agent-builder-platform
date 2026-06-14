@@ -7,7 +7,7 @@ import '@xyflow/react/dist/style.css';
 import { api } from '@/convex/_generated/api';
 import { useParams } from 'next/navigation';
 import { Background, BackgroundVariant, ReactFlow } from '@xyflow/react';
-import { nodeTypes } from '../page';
+import { nodeTypes } from '../../_components/nodeTypes';
 import axios from 'axios';
 import { set } from 'date-fns'
 import { Button } from '@/components/ui/button'
