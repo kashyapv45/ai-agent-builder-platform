@@ -3,8 +3,6 @@ import React, { useCallback, useContext, useEffect, useState } from 'react'
 import Header from '../_components/Header'
 import { ReactFlow, applyNodeChanges, applyEdgeChanges, addEdge, Background, BackgroundVariant, MiniMap, Controls, Panel, useOnSelectionChange, OnSelectionChangeParams } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import StartNode from '../_customNodes/StartNode';
-import AgentNode from '../_customNodes/AgentNode';
 import AgentsToolPanel from '../_components/AgentsToolPanel';
 import NodeSettings from '../_components/NodeSettings';
 import { WorkflowContext } from '@/context/WorkflowContext';
@@ -15,21 +13,7 @@ import { AgentType } from '@/types/AgentType';
 import { Button } from '@/components/ui/button';
 import { Save } from 'lucide-react';
 import { toast } from 'sonner';
-import EndNode from '../_customNodes/EndNode';
-import ApiNode from '../_customNodes/ApiNode';
-import WhileNode from '../_customNodes/WhileNode';
-import IfElseNode from '../_customNodes/IfElseNode';
-import UserApprovalNode from '../_customNodes/UserApprovalNode';
-
-const nodeTypes = {
-    StartNode: StartNode,
-    AgentNode: AgentNode,
-    EndNode: EndNode,
-    IfElseNode: IfElseNode,
-    WhileNode: WhileNode,
-    UserApprovalNode: UserApprovalNode,
-    ApiNode: ApiNode
-};
+import { nodeTypes } from '../_components/nodeTypes';
 
 function AgentBuilder() {
     const { agentId } = useParams();
