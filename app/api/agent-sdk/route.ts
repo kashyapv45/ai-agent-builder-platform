@@ -102,7 +102,7 @@ export async function POST(req: NextRequest) {
     const createdAgent = (agentDetail?.agentToolConfig?.agents || []).map((config: any) => {
         return new LlmAgent({
             name: makeSafeName(config?.name),
-            model: config?.model || 'gemini-2.5-flash',
+            model: config?.model || 'gemini-1.5-flash',
             instruction: config?.instruction || "Help the user.",
             tools: generatedTools
         });
@@ -130,7 +130,7 @@ IMPORTANT - DATA ALREADY PROVIDED:
     2. Take initiative! Make logical assumptions and use reasonable defaults.
     3. Present your full solution first, then ask if the user wants adjustments.
     4. Refuse to answer out-of-scope general knowledge questions.`,
-        model: 'gemini-2.5-flash',
+        model: (agentDetail?.agentToolConfig?.agents?.[0]?.model) || 'gemini-1.5-flash',
         subAgents: createdAgent,
         tools: generatedTools
     });

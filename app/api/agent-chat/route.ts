@@ -56,7 +56,7 @@ CRITICAL INSTRUCTIONS:
             case 'AgentNode': {
                 const instruction = node.settings?.instructions || 'Help the user.';
                 const context = node.settings?.context || '';
-                const model = node.settings?.model || 'gemini-2.5-flash';
+                const model = node.settings?.model || 'gemini-1.5-flash';
                 const output = node.settings?.output || 'text';
 
                 const result = await geminiai.models.generateContent({
@@ -114,7 +114,7 @@ User input: ${currentInput}`,
 
                 try {
                     const evalResult = await geminiai.models.generateContent({
-                        model: 'gemini-2.5-flash',
+                        model: 'gemini-1.5-flash',
                         contents: `Given this data: ${currentInput}
                         
 Does this condition evaluate to true? Condition: "${condition}"

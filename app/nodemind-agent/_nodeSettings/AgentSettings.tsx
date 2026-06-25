@@ -17,7 +17,7 @@ function AgentSettings({ selectedNode, updateFormData }: any) {
         instructions: '',
         context: '',
         chatHistory: false,
-        model: 'gemini-flash-1.5',
+        model: 'gemini-1.5-flash',
         output: 'text',
         jsonSchema: ''
     })
@@ -73,9 +73,10 @@ function AgentSettings({ selectedNode, updateFormData }: any) {
                     </SelectTrigger>
                     <SelectContent position="popper" sideOffset={4}>
                         <SelectGroup>
-                            <SelectItem value="gemini-2.5-flash">gemini-2.5 flash</SelectItem>
-                            <SelectItem value="gemini-pro-3.0">gemini-pro-3.0</SelectItem>
-                            <SelectItem value="gpt-4">gpt-4</SelectItem>
+                            <SelectItem value="gemini-1.5-flash">Gemini 1.5 Flash</SelectItem>
+                            <SelectItem value="gemini-1.5-pro">Gemini 1.5 Pro</SelectItem>
+                            <SelectItem value="gemini-2.0-flash">Gemini 2.0 Flash</SelectItem>
+                            <SelectItem value="gemini-2.0-flash-exp">Gemini 2.0 Flash Exp</SelectItem>
                         </SelectGroup>
                     </SelectContent>
                 </Select>
