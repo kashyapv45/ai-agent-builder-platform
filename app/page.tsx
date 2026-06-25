@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { UserButton } from "@clerk/nextjs";
+import { UserButton, SignedIn, SignedOut, SignUpButton } from "@clerk/nextjs";
 import {
   ArrowRight,
   Bot,
@@ -77,12 +77,21 @@ function Navbar() {
         <span className="font-bold text-neutral-900 text-xl tracking-tight">NodeMind</span>
       </div>
       <div className="flex items-center gap-4">
-        <UserButton afterSignOutUrl="/" />
-        <Link href="/Dashboard">
-          <Button size="sm" className="gap-2 shadow-sm rounded-full px-5 hover:scale-105 transition-transform bg-neutral-900 text-white hover:bg-neutral-800">
-            Dashboard <ArrowRight className="w-3.5 h-3.5" />
-          </Button>
-        </Link>
+        <SignedIn>
+          <UserButton afterSignOutUrl="/" />
+          <Link href="/Dashboard">
+            <Button size="sm" className="gap-2 shadow-sm rounded-full px-5 hover:scale-105 transition-transform bg-neutral-900 text-white hover:bg-neutral-800">
+              Dashboard <ArrowRight className="w-3.5 h-3.5" />
+            </Button>
+          </Link>
+        </SignedIn>
+        <SignedOut>
+          <SignUpButton mode="modal">
+            <Button size="sm" className="gap-2 shadow-sm rounded-full px-5 hover:scale-105 transition-transform bg-neutral-900 text-white hover:bg-neutral-800">
+              Sign Up <ArrowRight className="w-3.5 h-3.5" />
+            </Button>
+          </SignUpButton>
+        </SignedOut>
       </div>
     </nav>
   );
@@ -128,11 +137,20 @@ function Hero() {
 
       {/* CTA buttons */}
       <div className="relative z-10 mt-10 flex flex-wrap gap-4 justify-center">
-        <Link href="/Dashboard">
-          <Button size="lg" className="h-12 px-8 gap-2 rounded-full shadow-lg shadow-neutral-900/10 transition-all hover:-translate-y-0.5 bg-neutral-900 text-white hover:bg-neutral-800 text-base font-semibold">
-            <Zap className="w-4 h-4 fill-current" /> Start Building
-          </Button>
-        </Link>
+        <SignedIn>
+          <Link href="/Dashboard">
+            <Button size="lg" className="h-12 px-8 gap-2 rounded-full shadow-lg shadow-neutral-900/10 transition-all hover:-translate-y-0.5 bg-neutral-900 text-white hover:bg-neutral-800 text-base font-semibold">
+              <Zap className="w-4 h-4 fill-current" /> Start Building
+            </Button>
+          </Link>
+        </SignedIn>
+        <SignedOut>
+          <SignUpButton mode="modal">
+            <Button size="lg" className="h-12 px-8 gap-2 rounded-full shadow-lg shadow-neutral-900/10 transition-all hover:-translate-y-0.5 bg-neutral-900 text-white hover:bg-neutral-800 text-base font-semibold">
+              <Zap className="w-4 h-4 fill-current" /> Start Building
+            </Button>
+          </SignUpButton>
+        </SignedOut>
         <Link href="#features">
           <Button variant="outline" size="lg" className="h-12 px-8 gap-2 rounded-full shadow-sm transition-all hover:-translate-y-0.5 bg-white text-neutral-700 hover:bg-neutral-50 border-neutral-200/80 text-base font-semibold">
             <Layers className="w-4 h-4" /> Explore Nodes
@@ -253,16 +271,25 @@ function CTA() {
             <Zap className="w-4 h-4 text-amber-400 fill-amber-400" /> Production Ready
           </div>
           <h2 className="text-4xl sm:text-6xl font-black mb-6 tracking-tight leading-tight">
-            Deploy your first AI agent <br className="hidden sm:block" /> in under 60 seconds.
+            Transform your ideas <br className="hidden sm:block" /> into powerful AI agents.
           </h2>
           <p className="text-neutral-400 mb-10 max-w-xl mx-auto text-lg sm:text-xl font-medium">
             Stop wrestling with complex frameworks. Build, test, and ship your AI workflows with NodeMind's visual engine.
           </p>
-          <Link href="/Dashboard">
-            <Button size="lg" className="h-14 px-10 text-lg font-bold gap-3 rounded-full transition-all bg-white text-neutral-900 hover:bg-neutral-100 hover:scale-105 shadow-xl shadow-white/10">
-              Open Canvas <ArrowRight className="w-5 h-5" />
-            </Button>
-          </Link>
+          <SignedIn>
+            <Link href="/Dashboard">
+              <Button size="lg" className="h-14 px-10 text-lg font-bold gap-3 rounded-full transition-all bg-white text-neutral-900 hover:bg-neutral-100 hover:scale-105 shadow-xl shadow-white/10">
+                Open Canvas <ArrowRight className="w-5 h-5" />
+              </Button>
+            </Link>
+          </SignedIn>
+          <SignedOut>
+            <SignUpButton mode="modal">
+              <Button size="lg" className="h-14 px-10 text-lg font-bold gap-3 rounded-full transition-all bg-white text-neutral-900 hover:bg-neutral-100 hover:scale-105 shadow-xl shadow-white/10">
+                Start for Free <ArrowRight className="w-5 h-5" />
+              </Button>
+            </SignUpButton>
+          </SignedOut>
         </div>
       </div>
     </section>

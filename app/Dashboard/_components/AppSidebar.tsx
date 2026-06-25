@@ -83,25 +83,27 @@ function AppSidebar() {
     const current = planLimits[userPlan];
 
     return (
-        <Sidebar collapsible='icon' className='bg-[#F6F8FA] border-r border-[#E5E5E5] shadow-sm'>
-            <SidebarHeader>
-                <div className='flex gap-2 items-center'>
-                    <Image src="/logo.svg" alt="Logo" width={36} height={36} />
-                    {open && <h2 className='font-extrabold text-2xl'>NodeMind</h2>}
+        <Sidebar collapsible='icon' className='bg-white border-r border-neutral-200/80 shadow-sm'>
+            <SidebarHeader className="px-4 py-3">
+                <div className='flex gap-2.5 items-center'>
+                    <Image src="/logo.svg" alt="Logo" width={32} height={32} />
+                    {open && <h2 className='font-bold text-xl tracking-tight text-neutral-900'>NodeMind</h2>}
                 </div>
             </SidebarHeader>
             <SidebarContent>
                 <SidebarGroup>
-                    <SidebarGroupLabel className='text-xl mt-10 mb-3'>Navigations</SidebarGroupLabel>
-                    {open && <Separator className='bg-gray-300 mb-2' />}
+                    <SidebarGroupLabel className='text-xs font-bold uppercase tracking-widest text-neutral-400 mt-6 mb-2'>Navigations</SidebarGroupLabel>
+                    {open && <Separator className='bg-neutral-100 mb-2' />}
                     <SidebarContent>
                         <SidebarMenu>
                             {MenuOptions.map((menu, index) => (
                                 <SidebarMenuItem key={index}>
                                     <SidebarMenuButton asChild size={open ? 'lg' : 'default'}
-                                        isActive={path === menu.url}>
+                                        isActive={path === menu.url}
+                                        className={`transition-all hover:bg-neutral-100 ${path === menu.url ? 'bg-neutral-100 text-neutral-900 font-semibold' : 'text-neutral-500'}`}
+                                    >
                                         <Link href={menu.url}>
-                                            <menu.icon className='me-2' />
+                                            <menu.icon className={`me-2 ${path === menu.url ? 'text-indigo-600' : ''}`} />
                                             <span>{menu.title}</span>
                                         </Link>
                                     </SidebarMenuButton>
@@ -112,16 +114,16 @@ function AppSidebar() {
                 </SidebarGroup>
             </SidebarContent>
             {open && 
-            <SidebarFooter className='mb-7'>
+            <SidebarFooter className='mb-7 px-4'>
                 <div className='flex gap-2 items-center mb-1'>
                     {current.icon}
-                    <h2 className='font-semibold'>Plan: {current.label}</h2>
+                    <h2 className='font-semibold text-neutral-900'>Plan: {current.label}</h2>
                 </div>
-                <div className='text-sm text-gray-500 mb-3'>
+                <div className='text-sm text-neutral-500 mb-4'>
                     Tokens: {userDetails?.token || 0} / {current.max}
                 </div>
 
-                <Button onClick={UpgradeClicked} variant={userPlan === 'ultimate' ? 'outline' : 'default'}>
+                <Button onClick={UpgradeClicked} variant={userPlan === 'ultimate' ? 'outline' : 'default'} className="rounded-full font-semibold shadow-sm w-full">
                     {userPlan === 'ultimate' ? "Manage Plan" : "Upgrade Plan"}
                 </Button>
             </SidebarFooter>}

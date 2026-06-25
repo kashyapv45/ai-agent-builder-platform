@@ -5,12 +5,16 @@ import BackgroundParticles  from './_components/BackgroundParticles'
 
 function Dashboard() {
   return (
-    <div>
+    <div className="relative min-h-[calc(100vh-73px)]">
       <BackgroundParticles />
-      <div className='backdrop-blur-md p-2 md:px-10 lg:px-15 mt-20 bg-[#FBFBFB]/1 rounded-lg mx-20 border border-[#E8E8E8]'>
-        <CreateAgentSection />
-        <AiAgentListTab/>
+      <div className='relative z-10 p-6 md:p-8 lg:p-12 max-w-7xl mx-auto'>
+        <div className="bg-white rounded-3xl shadow-sm border border-neutral-200/80 p-6 md:p-10">
+            <CreateAgentSection />
+            <div className="mt-12">
+              <AiAgentListTab/>
+            </div>
         </div>
+      </div>
     </div>
   )
 }
