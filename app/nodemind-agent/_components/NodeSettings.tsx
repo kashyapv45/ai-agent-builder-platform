@@ -29,7 +29,7 @@ function NodeSettings() {
 
 
   return selectedNode && (
-    <div className='p-5 rounded-2xl bg-white/80 backdrop-blur-xl border border-neutral-200/60 shadow-lg shadow-neutral-900/5 ring-1 ring-black/5 w-[20vw] max-h-[90vh] overflow-y-auto'>
+    <div className='p-5 rounded-2xl bg-white/80 backdrop-blur-xl border border-neutral-200/60 shadow-lg shadow-neutral-900/5 ring-1 ring-black/5 w-[20vw] max-h-[90vh] overflow-y-auto overflow-x-hidden'>
       {selectedNode?.type === 'AgentNode' && <AgentSettings selectedNode={selectedNode} updateFormData={(value: any) => onUpdateNodeData(value)} />}
       {selectedNode?.type == 'EndNode' && <EndSettings selectedNode={selectedNode} updateFormData={(value: any) => onUpdateNodeData(value)} />}
       {selectedNode?.type == 'WhileNode' && <WhileSettings selectedNode={selectedNode} updateFormData={(value: any) => onUpdateNodeData(value)} />}

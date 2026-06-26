@@ -83,7 +83,7 @@ function AgentSettings({ selectedNode, updateFormData }: any) {
             </div>
             <div className='mt-3'>
                 <Label>Output Format</Label>
-                <Tabs defaultValue="text" className="w-100 mt-3" value={formData?.output} onValueChange={(value) => handleChange('output', value)}>
+                <Tabs defaultValue="text" className="w-full mt-3" value={formData?.output} onValueChange={(value) => handleChange('output', value)}>
                     <TabsList>
                         <TabsTrigger value="text">Text</TabsTrigger>
                         <TabsTrigger value="json">Json</TabsTrigger>

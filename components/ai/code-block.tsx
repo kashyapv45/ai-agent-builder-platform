@@ -519,8 +519,8 @@ export type CodeBlockContentProps = HTMLAttributes<HTMLDivElement> & {
 export const CodeBlockContent = ({
   children,
   themes = {
-    light: "vitesse-light",
-    dark: "vitesse-dark",
+    light: "github-light",
+    dark: "github-dark",
   },
   language = "typescript",
   syntaxHighlighting = true,
