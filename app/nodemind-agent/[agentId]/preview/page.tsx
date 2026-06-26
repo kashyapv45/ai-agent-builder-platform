@@ -173,14 +173,14 @@ function PreviewAgent() {
   };
 
   return (
-    <div>
+    <div className='bg-[#FAFAFA] min-h-screen'>
       <Header
         previewHeader={true}
         agentDetails={agentDetails}
         onPublish={OnPublish}
       />
-      <div className='grid grid-cols-4 gap-1 p-2'>
-        <div className='col-span-3 p-0.5 border-2 rounded-2xl'>
+      <div className='grid grid-cols-4 gap-4 p-4'>
+        <div className='col-span-3 rounded-2xl border border-neutral-200/80 bg-white shadow-sm overflow-hidden'>
           <div style={{ width: '100%', height: '89vh' }}>
 
             <ReactFlow
@@ -190,16 +190,17 @@ function PreviewAgent() {
               nodeTypes={nodeTypes}
               draggable={false}
             >
-              <h2 className='p-2 font-bold ml-2'>Preview</h2>
+              <h2 className='p-3 font-bold text-sm uppercase tracking-widest text-neutral-400 ml-2'>Preview</h2>
               <Background variant={BackgroundVariant.Dots} gap={15} size={1} />
             </ReactFlow>
           </div>
         </div>
         {!agentDetails?.agentToolConfig ? (
-          <div className='col-span-1 p-2 border-2 rounded-2xl bg-white' style={{ height: '90vh' }}>
-            <div className='flex items-center justify-center h-full'>
-              <Button onClick={GenerateAgentToolConfig} disabled={loading}>
-                <RefreshCcw className={`${loading && 'animate-spin'} mr-2 w-4 h-4`} /> Reboot Agent
+          <div className='col-span-1 rounded-2xl border border-neutral-200/80 bg-white shadow-sm' style={{ height: '90vh' }}>
+            <div className='flex flex-col items-center justify-center h-full gap-3'>
+              <p className='text-sm text-neutral-400 font-medium'>Agent needs configuration</p>
+              <Button onClick={GenerateAgentToolConfig} disabled={loading} className="rounded-full gap-2 shadow-sm font-semibold">
+                <RefreshCcw className={`${loading && 'animate-spin'} w-4 h-4`} /> Reboot Agent
               </Button>
             </div>
           </div>

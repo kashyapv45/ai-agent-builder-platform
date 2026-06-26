@@ -6,32 +6,32 @@ const AgentTools = [
     {
         name: 'Agent',
         icon: MousePointer,
-        bgColor: '#FCE7C8',
-        textColor: '#D97D55',
+        bgColor: '#EEF2FF',
+        textColor: '#6366F1',
         id: 'agent',
         type: 'AgentNode',
     },
     {
         name: 'End',
         icon: Square,
-        bgColor: '#F9DFDF',
-        textColor: '#FD7979',
+        bgColor: '#FEE2E2',
+        textColor: '#EF4444',
         id: 'end',
         type: 'EndNode',
     },
     {
         name: 'If/Else',
         icon: Merge,
-        bgColor: '#C5D3E8',
-        textColor: '#6D94C5',
+        bgColor: '#FEF3C7',
+        textColor: '#F59E0B',
         type: 'IfElseNode',
         id: 'ifElse',
     },
     {
         name: 'While',
         icon: Repeat,
-        bgColor: '#748DAE',
-        textColor: '#213C51',
+        bgColor: '#EDE9FE',
+        textColor: '#8B5CF6',
         id: 'while',
         type: 'WhileNode',
 
@@ -39,8 +39,8 @@ const AgentTools = [
     {
         name: 'User Approval',
         icon: ThumbsUp,
-        bgColor: '#E1E9C9',
-        textColor: '#89986D',
+        bgColor: '#D1FAE5',
+        textColor: '#10B981',
         id: 'approval',
         type: 'UserApprovalNode',
 
@@ -48,8 +48,8 @@ const AgentTools = [
     {
         name: 'API',
         icon: Webhook,
-        bgColor: '#FFE6E6',
-        textColor: '#E493B3',
+        bgColor: '#E0F2FE',
+        textColor: '#0EA5E9',
         id: 'api',
         type: 'ApiNode',
 
@@ -69,24 +69,23 @@ function AgentsToolPanel() {
         setAddedNodes((prevNodes: any[]) => [...prevNodes, newNode]);
     };
     return (
-        <div className='bg-[#F5F5F0]/1 backdrop-blur-sm p-5 rounded-2xl shadow'>
-            <h2 className='text-xl font-bold text-[#213C51] mb-4'>AI Tools Panel</h2>
-            <div className='flex flex-col gap-4'>
+        <div className='bg-white/80 backdrop-blur-xl border border-neutral-200/60 p-5 rounded-2xl shadow-lg shadow-neutral-900/5 ring-1 ring-black/5'>
+            <h2 className='text-sm font-bold uppercase tracking-widest text-neutral-400 mb-4'>AI Tools</h2>
+            <div className='flex flex-col gap-2.5'>
                 {AgentTools.map((tool, index) => (
                     <div
                         key={index}
-                        className='flex gap-1 items-center border bg-white p-1 px-2 rounded-sm cursor-pointer w-full'
-                        style={{ borderColor: tool.textColor }}
+                        className='group flex gap-3 items-center border border-neutral-200/80 bg-white hover:bg-neutral-50 p-2 px-3 rounded-xl cursor-pointer w-full transition-all hover:shadow-sm hover:-translate-y-0.5'
                         draggable onClick={() => onAgentToolClick(tool)}
                     >
                         {createElement(tool.icon, {
-                            className: 'rounded-sm p-3 w-10 h-10',
+                            className: 'rounded-lg p-2 w-9 h-9 transition-transform group-hover:scale-110',
                             style: {
                                 color: tool.textColor,
                                 backgroundColor: tool.bgColor
                             }
                         })}
-                        <h2 className='text-md ml-3' style={{ color: tool.textColor }}>
+                        <h2 className='text-sm font-semibold text-neutral-700'>
                             {tool.name}
                         </h2>
                     </div>

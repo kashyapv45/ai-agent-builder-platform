@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import { Loader2Icon, RefreshCcw, Send } from 'lucide-react'
+import { Loader2Icon, RefreshCcw, Send, Sparkles } from 'lucide-react'
 import React, { useState } from 'react'
 import { Separator } from "@/components/ui/separator"
 import { AgentType } from '@/types/AgentType'
@@ -71,21 +71,32 @@ function ChatUI({ GenerateAgentToolConfig, loading, agentDetails, conversationId
     }
 
     return (
-        <div className='p-4 flex flex-col w-full h-[90vh]  border-2 rounded-2xl'>
+        <div className='flex flex-col w-full h-[90vh] rounded-2xl border border-neutral-200/80 bg-white shadow-sm overflow-hidden'>
 
-            <div className='flex items-center justify-between mb-1 p-1'>
-                <h2>{agentDetails?.name}</h2>
-                <Button onClick={GenerateAgentToolConfig} disabled={loading}>
-                    <RefreshCcw className={`${loading && 'animate-spin'} mr-2 w-4 h-4`} /> Reboot Agent
+            {/* Header */}
+            <div className='flex items-center justify-between px-5 py-3 border-b border-neutral-100 bg-white'>
+                <div className='flex items-center gap-2'>
+                    <Sparkles className='w-4 h-4 text-indigo-500' />
+                    <h2 className='text-sm font-bold text-neutral-900 tracking-tight'>{agentDetails?.name}</h2>
+                </div>
+                <Button onClick={GenerateAgentToolConfig} disabled={loading} variant="outline" size="sm" className="rounded-full gap-2 text-xs font-semibold">
+                    <RefreshCcw className={`${loading && 'animate-spin'} w-3.5 h-3.5`} /> Reboot
                 </Button>
             </div>
-            <Separator />
-            <div className='flex-1 overflow-y-auto p-4 space-y-5 flex flex-col w-full h-full'>
+
+            {/* Messages */}
+            <div className='flex-1 overflow-y-auto p-5 space-y-4 flex flex-col w-full bg-[#FAFAFA]'>
+                {messages.length === 0 && (
+                    <div className='flex-1 flex flex-col items-center justify-center text-center'>
+                        <Sparkles className='w-8 h-8 text-neutral-300 mb-3' />
+                        <p className='text-sm text-neutral-400 font-medium'>Start a conversation with your agent</p>
+                    </div>
+                )}
 
                 {messages.map((msg, index) => (
                     msg.content && (
-                        <div className={`p-3 flex rounded-lg max-w-[80%] text-black ${msg.role === 'user' ? 'self-end bg-gray-100 border' : 'self-start bg-gray-200 border'}`} key={index}>
-                            <div className='text-sm flex flex-col gap-2'>
+                        <div className={`p-4 rounded-2xl max-w-[85%] text-sm leading-relaxed ${msg.role === 'user' ? 'self-end bg-neutral-900 text-white' : 'self-start bg-white border border-neutral-200/80 text-neutral-700 shadow-sm'}`} key={index}>
+                            <div className='flex flex-col gap-2'>
                                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
                                     {msg.content}
                                 </ReactMarkdown>
@@ -97,25 +108,27 @@ function ChatUI({ GenerateAgentToolConfig, loading, agentDetails, conversationId
 
                 {/* Loading state */}
                 {loadingMsg && (
-                    <div className='flex justify-center items-center p-4 gap-3'>
-                        <div className='animate-spin rounded-full h-6 w-6 border-2 border-zinc-300 border-t-zinc-800'></div>
-                        <span className='text-sm text-zinc-600 font-medium'>Thinking... Working on your request</span>
+                    <div className='flex items-center gap-3 self-start p-4 rounded-2xl bg-white border border-neutral-200/80 shadow-sm'>
+                        <div className='animate-spin rounded-full h-4 w-4 border-2 border-neutral-200 border-t-indigo-500'></div>
+                        <span className='text-sm text-neutral-500 font-medium'>Thinking...</span>
                     </div>
                 )}
             </div>
-            <Separator />
+
             {/* Footer Input */}
-            <div className='p-1 mt-3 flex items-center gap-2'>
-                <Textarea
-                    value={userInput}
-                    onChange={(e) => setUserInput(e.target.value)}
-                    placeholder='Type your message here...'
-                    className='flex-1 p-1 border rounded resize-none'
-                    rows={1}
-                />
-                <Button onClick={OnMsgSend} disabled={loadingMsg || !userInput.trim().length || !conversationId}>
-                    {loadingMsg ? <Loader2Icon className='animate-spin' /> : <Send />}
-                </Button>
+            <div className='px-4 py-3 border-t border-neutral-100 bg-white'>
+                <div className='flex items-center gap-2.5'>
+                    <Textarea
+                        value={userInput}
+                        onChange={(e) => setUserInput(e.target.value)}
+                        placeholder='Type your message...'
+                        className='flex-1 border-neutral-200/80 rounded-xl resize-none bg-[#FAFAFA] focus:bg-white transition-colors text-sm'
+                        rows={1}
+                    />
+                    <Button onClick={OnMsgSend} disabled={loadingMsg || !userInput.trim().length || !conversationId} size="sm" className="rounded-full h-9 w-9 p-0 shadow-sm">
+                        {loadingMsg ? <Loader2Icon className='animate-spin w-4 h-4' /> : <Send className='w-4 h-4' />}
+                    </Button>
+                </div>
             </div>
         </div>
     )

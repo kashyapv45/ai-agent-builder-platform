@@ -82,9 +82,9 @@ while (true) {
 function CodeDialog({ openDialog, setOpenDialog }: Props) {
     return (
         <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-            <DialogContent className="sm:max-w-2xl min-w-3xl h-[90vh] flex flex-col p-0 overflow-hidden my-5 bg-[#F6F8FA] backdrop-blur-sm rounded-2xl shadow">
-                <DialogHeader className="p-6 pb-2 shrink-0">
-                    <DialogTitle className='text-2xl font-bold'>Get Code</DialogTitle>
+            <DialogContent className="sm:max-w-2xl min-w-3xl h-[90vh] flex flex-col p-0 overflow-hidden my-5 bg-white backdrop-blur-xl border border-neutral-200/80 rounded-2xl shadow-2xl shadow-neutral-900/10">
+                <DialogHeader className="p-6 pb-2 shrink-0 border-b border-neutral-100">
+                    <DialogTitle className='text-xl font-bold tracking-tight text-neutral-900'>Get Code</DialogTitle>
                 </DialogHeader>
                 <div className="flex-1 overflow-hidden px-6 pb-6"> 
                     <CodeBlock

@@ -91,7 +91,7 @@ function AgentBuilder() {
         onChange: onNodeSelect
     })
     return (
-        <div>
+        <div className='bg-[#FAFAFA]'>
             <Header agentDetails={agentDetails} />
             <div style={{ width: '100vw', height: '92vh' }}>
                 <ReactFlow
@@ -112,8 +112,8 @@ function AgentBuilder() {
                         <AgentsToolPanel />
                     </Panel>
                     <Panel position="bottom-center">
-                        <Button onClick={saveNodesData}>
-                            <Save className="w-4 h-4 mr-2" /> Save
+                        <Button onClick={saveNodesData} className="rounded-full gap-2 shadow-lg shadow-neutral-900/10 font-semibold bg-neutral-900 text-white hover:bg-neutral-800 px-6">
+                            <Save className="w-4 h-4" /> Save
                         </Button>
                     </Panel>
                     <Background variant={BackgroundVariant.Dots} gap={15} size={1} />
